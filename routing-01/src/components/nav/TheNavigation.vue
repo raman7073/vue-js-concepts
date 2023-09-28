@@ -9,6 +9,7 @@
           <router-link to="/users">Users</router-link>
         </li>
       </ul>
+      <ul></ul>
     </nav>
   </header>
 </template>
@@ -17,7 +18,8 @@
 header {
   width: 100%;
   height: 5rem;
-  background-color: #11005c;
+  font-weight: normal;
+  background-color: #11005d;
 }
 
 nav {
@@ -46,11 +48,12 @@ a {
   color: white;
   padding: 0.5rem 1.5rem;
   display: inline-block;
+  width: auto;
 }
 
 a:hover,
 a:active,
-a.active {
+a.router-link-active {
   color: #f1a80a;
   border-color: #f1a80a;
   background-color: #1a037e;

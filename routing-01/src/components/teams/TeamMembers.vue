@@ -2,13 +2,9 @@
   <section>
     <h2>{{ teamName }}</h2>
     <ul>
-      <user-item
-        v-for="member in members"
-        :key="member.id"
-        :name="member.fullName"
-        :role="member.role"
-      ></user-item>
+      <user-item v-for="member in members" :key="member.id" :name="member.fullName" :role="member.role"></user-item>
     </ul>
+    <router-link to="/teams/t2">Go To Team 2</router-link>
   </section>
 </template>
 
@@ -16,28 +12,40 @@
 import UserItem from '../users/UserItem.vue';
 
 export default {
-  inject:['teams','users'],
+  inject: ['teams', 'users'],
+  props:['teamId'],
   components: {
     UserItem
   },
   data() {
     return {
-      teamName:'' ,
-      members:[],
+      teamName: '',
+      members: [],
     };
   },
-  created(){
-    const teamId = this.$route.params.teamId;
-    const selectedTeam = this.teams.find(team=> team.id === teamId);
-    const members = selectedTeam.members;
-    const selectedMembers = [];
-    for (const member of members){
-      const selectedUser = this.users.find(user=> user.id===member);
-      selectedMembers.push(selectedUser)
+  methods: {
+    loadTeamMembers(teamId) {
+     
+      const selectedTeam = this.teams.find(team => team.id === teamId);
+      const members = selectedTeam.members;
+      const selectedMembers = [];
+      for (const member of members) {
+        const selectedUser = this.users.find(user => user.id === member);
+        selectedMembers.push(selectedUser)
+      }
+      this.members = selectedMembers;
+      this.teamName = selectedTeam.name;
     }
-    this.members = selectedMembers;
-    this.teamName = selectedTeam.name;
+  },
+  //when url change (route ) ,created won't be called again
+  created() {
+   this.loadTeamMembers(this.teamId);
 
+  },
+  watch: {
+    teamId(newId) {
+      this.loadTeamMembers(newId);
+    }
   }
 };
 </script>

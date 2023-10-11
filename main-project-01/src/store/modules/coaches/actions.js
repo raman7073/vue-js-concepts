@@ -14,10 +14,11 @@ export default {
             body: JSON.stringify(coachData)
         });
 
-        // const responseData = await response.json();
+        const responseData = await response.json();
 
         if (!response.ok) {
-            console.log('oo');
+           const error = new Error(responseData.message || 'Failed to fetch');
+           throw error;
         }
 
         context.commit('registerCoach', {
@@ -25,27 +26,33 @@ export default {
             id: userId
         });
     },
-    async loadCoaches(context) {
-        const response = fetch(`https://vue-demo-c3b57-default-rtdb.asia-southeast1.firebasedatabase.app/coaches.json`);
-        const responseData = await response.json();
+    async loadCoaches(context,payload) {
+
+        if(!payload.forceRefresh && !context.getters.shouldUpdate){
+            return ;
+        }
+        const response = fetch('https://vue-demo-c3b57-default-rtdb.asia-southeast1.firebasedatabase.app/coaches.json');
+        const responseData = (await response).json;
         if (!response.ok) {
-            console.log('oo');
+           const error = new Error(responseData.message || 'Failed to fetch!');
+           throw error;
         }
 
         const coaches = [];
 
-        for(const key in responseData){
+        for (const key in responseData) {
             const coach = {
-                id:key,
+                id: key,
                 firstName: responseData[key].firstName,
                 lastName: responseData[key].lastName,
                 description: responseData[key].description,
-                hourlyRate:responseData[key].hourlyRate,
+                hourlyRate: responseData[key].hourlyRate,
                 areas: responseData[key].areas
             };
             coaches.push(coach);
         }
 
-        context.commit('setCoaches',coaches);
+        context.commit('setCoaches', coaches);
+        context.commit('setFetchTimestamp');
     }
 };

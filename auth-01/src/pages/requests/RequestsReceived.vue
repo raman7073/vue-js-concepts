@@ -10,12 +10,8 @@
         </header>
         <base-spinner v-if="isLoading"></base-spinner>
         <ul v-else-if="hasRequests && !isLoading">
-          <request-item
-            v-for="req in receivedRequests"
-            :key="req.id"
-            :email="req.userEmail"
-            :message="req.message"
-          ></request-item>
+          <request-item v-for="req in receivedRequests" :key="req.id" :email="req.userEmail"
+            :message="req.message"></request-item>
         </ul>
         <h3 v-else>You haven't received any requests yet!</h3>
       </base-card>

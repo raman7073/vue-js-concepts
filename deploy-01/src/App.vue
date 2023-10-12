@@ -23,8 +23,8 @@ export default {
     this.$store.dispatch('tryLogin');
   },
   watch: {
-    didAutoLogout(curVal, oldVal) {
-      if (curVal && curVal !== oldVal) {
+    didAutoLogout(curValue, oldValue) {
+      if (curValue && curValue !== oldValue) {
         this.$router.replace('/coaches');
       }
     }

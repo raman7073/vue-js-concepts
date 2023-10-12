@@ -36,13 +36,11 @@
 <script>
 import CoachItem from '../../components/coaches/CoachItem.vue';
 import CoachFilter from '../../components/coaches/CoachFilter.vue';
-import BaseButton from '../../components/ui/BaseButton.vue';
 
 export default {
   components: {
     CoachItem,
     CoachFilter,
-    BaseButton,
   },
   data() {
     return {
@@ -56,7 +54,7 @@ export default {
     };
   },
   computed: {
-    isLoggedIn(){
+    isLoggedIn() {
       return this.$store.getters.isAuthenticated;
     },
     isCoach() {

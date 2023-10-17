@@ -14,7 +14,7 @@
 
 <script>
 import ProjectItem from './ProjectItem.vue';
-import { computed, ref,watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 export default {
   components: {
@@ -24,12 +24,11 @@ export default {
   setup(props) {
     const enteredSearchTerm = ref('');
     const activeSearchTerm = ref('');
+
     function updateSearch(val) {
       enteredSearchTerm.value = val;
     }
-    const hasProjects = computed(function () {
-      return props.user.projects && availableProjects.value.length > 0;
-    });
+
     const availableProjects = computed(function () {
       if (activeSearchTerm.value) {
         return props.user.projects.filter((prj) =>
@@ -39,6 +38,11 @@ export default {
       return props.user.projects;
 
     });
+
+    const hasProjects = computed(function () {
+      return props.user.projects && availableProjects.value.length > 0;
+    });
+
     watch(enteredSearchTerm, function (newVal) {
       setTimeout(() => {
         if (newVal === enteredSearchTerm.value) {
@@ -46,7 +50,12 @@ export default {
         }
       }, 300);
     });
-    return { enteredSearchTerm, activeSearchTerm, updateSearch,availableProjects,hasProjects }
+    //props is reactive but it's properties are not, we can use toRefs here to watch prroperties
+    // const {user} = toRefs(props);
+    watch(props,function(){
+      enteredSearchTerm.value = '';
+    });
+    return { enteredSearchTerm, activeSearchTerm, updateSearch, availableProjects, hasProjects }
   },
   // data() {
   //   return {
@@ -72,7 +81,7 @@ export default {
   //     this.enteredSearchTerm = val;
   //   },
   // },
-  watch: {
+ // watch: {
     // enteredSearchTerm(val) {
     //   setTimeout(() => {
     //     if (val === this.enteredSearchTerm) {
@@ -80,10 +89,10 @@ export default {
     //     }
     //   }, 300);
     // },
-    user() {
-      this.enteredSearchTerm = '';
-    },
-  },
+    // user() {
+    //   this.enteredSearchTerm = '';
+    // },
+  //},
 };
 </script>
 
